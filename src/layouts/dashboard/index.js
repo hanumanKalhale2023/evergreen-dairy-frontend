@@ -1,41 +1,121 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 // @mui material components
 import Grid from "@mui/material/Grid";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 // Data
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+// Other components
+import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
+import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-
-// Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
 function Dashboard() {
+  const [userCount, setUserCount] = useState(0);
+  const [orderCount, setOrderCount] = useState(0); // Added state for orders
+  const [milkPrices, setMilkPrices] = useState({ cowPrice: 0, buffaloPrice: 0 }); // Added state for milk prices
+
+  // Fetch users count
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.error("No token found in localStorage.");
+          return;
+        }
+
+        const response = await fetch("http://localhost:4000/api/admin/all-users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setUserCount(data.length);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
+
+  // Fetch all orders count
+  useEffect(() => {
+    const fetchOrderCount = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.error("No token found in localStorage.");
+          return;
+        }
+
+        const response = await fetch("http://localhost:4000/api/orders", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setOrderCount(data.length); // Setting order count
+      } catch (error) {
+        console.error("Error fetching orders data", error);
+      }
+    };
+
+    fetchOrderCount();
+  }, []);
+
+  // Fetch Milk Prices
+  // Fetch Milk Prices
+  useEffect(() => {
+    const fetchMilkPrices = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.error("No token found in localStorage.");
+          return;
+        }
+
+        const response = await fetch("http://localhost:4000/api/price/get-all-price", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+
+        // Assuming the response contains milk prices like:
+        // [{ "milkType": "Buffalo", "milkPrice": 56 }, { "milkType": "Cow", "milkPrice": 64 }]
+
+        const buffaloPrice =
+          data.find((item) => item.milkType.toLowerCase() === "buffalow")?.milkPrice || 0;
+        const cowPrice = data.find((item) => item.milkType.toLowerCase() === "cow")?.milkPrice || 0;
+
+        setMilkPrices({ cowPrice, buffaloPrice });
+      } catch (error) {
+        console.error("Error fetching milk price data", error);
+      }
+    };
+
+    fetchMilkPrices();
+  }, []);
+
   const { sales, tasks } = reportsLineChartData;
 
   return (
@@ -48,37 +128,39 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
-                count={281}
+                title="Total Users"
+                count={userCount}
                 percentage={{
                   color: "success",
                   amount: "+55%",
-                  label: "than lask week",
+                  label: "than last week",
                 }}
               />
             </MDBox>
           </Grid>
+          {/* Changed this section to display order count */}
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title="All Orders"
+                count={orderCount}
                 percentage={{
                   color: "success",
-                  amount: "+3%",
+                  amount: "+5%",
                   label: "than last month",
                 }}
               />
             </MDBox>
           </Grid>
+          {/* Replaced "Revenue" with Milk Price */}
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
-                count="34k"
+                title="Milk Price (Cow)"
+                count={`₹${milkPrices.cowPrice}`}
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -91,19 +173,19 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
+                icon="store"
+                title="Milk Price (Buffalo)"
+                count={`₹${milkPrices.buffaloPrice}`}
                 percentage={{
                   color: "success",
-                  amount: "",
-                  label: "Just updated",
+                  amount: "+1%",
+                  label: "than yesterday",
                 }}
               />
             </MDBox>
           </Grid>
         </Grid>
-        <MDBox mt={4.5}>
+        {/* <MDBox mt={4.5}>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
@@ -143,7 +225,7 @@ function Dashboard() {
               </MDBox>
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
         <MDBox>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>

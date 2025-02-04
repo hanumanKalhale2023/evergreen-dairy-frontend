@@ -7,8 +7,8 @@ import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import logo from "assets/images/logo.jpeg"; // Import your logo here
+import bgImage from "assets/images/logos/evergreen.jpg";
+import logo from "assets/images/logos/evergreen.png"; // Import your logo here
 import axios from "axios";
 
 function Basic() {
@@ -32,7 +32,7 @@ function Basic() {
     };
 
     try {
-      const response = await axios.post("http://192.168.1.5:4000/api/admin/login", payload);
+      const response = await axios.post("http://localhost:4000/api/admin/login", payload);
 
       if (response.data.token) {
         // Store the token in localStorage

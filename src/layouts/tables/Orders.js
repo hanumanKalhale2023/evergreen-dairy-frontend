@@ -32,7 +32,7 @@ const Orders = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:4000/api/orders", {
+        const response = await fetch("http://192.168.1.5:4000/api/orders", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -157,26 +157,7 @@ const Orders = () => {
                   value={searchTerm}
                   onChange={handleSearchChange}
                   size="small"
-                  sx={{
-                    width: 250, // Adjust width
-                    backgroundColor: "#ffffff",
-                    borderRadius: "10px", // Set background color to white
-                    color: "black", // Set text color to black
-                    "& .MuiInputBase-root": {
-                      color: "black", // Ensure the input text color is black
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "black", // Optional: Add border color if needed
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "black", // Border color on hover
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "black", // Border color when focused
-                      },
-                    },
-                  }}
+                  sx={{ width: 250 }} // Optional: Adjust width for the search bar
                 />
               </MDBox>
               <MDBox pt={3} sx={{ display: "flex", flexDirection: "column", height: "400px" }}>

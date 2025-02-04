@@ -53,6 +53,8 @@ import AddSubAdmin from "layouts/notifications/Addsubadmin";
 import CreateSession from "layouts/notifications/CreateSession";
 import GetSessions from "layouts/notifications/Getsession";
 import Users from "layouts/tables/Users";
+import DailyEntries from "layouts/tables/DailyEntries";
+import Orders from "layouts/tables/Teacher";
 
 const routes = [
   {
@@ -78,22 +80,22 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "All Teachers", // Adding the Teachers menu item
-    key: "teachers",
-    route: "/teachers",
+    name: "All Orders", // Adding the Teachers menu item
+    key: "orders",
+    route: "/orders",
     icon: (
       <i className="material-icons" style={{ color: "white" }}>
         person
       </i>
     ), // Icon for teachers
-    component: <Teachers />, // The component to render
+    component: <Orders />, // The component to render
     layout: "/admin",
   },
   {
     type: "collapse",
-    name: "All Schools", // Adding the Schools menu item
+    name: "Milk Prices", // Adding the Schools menu item
     key: "schools",
-    route: "/schools",
+    route: "/milk-prices",
     icon: (
       <i className="material-icons" style={{ color: "white" }}>
         school
@@ -104,84 +106,97 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Sub-admin", // Adding the Sub-admin menu item
-    key: "sub-admin",
-    route: "/sub-admin",
+    name: "Daily Entries", // Adding the Schools menu item
+    key: "schools",
+    route: "/daily-entries",
     icon: (
       <i className="material-icons" style={{ color: "white" }}>
-        admin_panel_settings
+        school
       </i>
-    ), // Updated icon for sub-admin
-    component: <AddSubAdmin />, // The component to render
+    ), // Icon for schools
+    component: <DailyEntries />, // The component to render
     layout: "/admin",
   },
+  // {
+  //   type: "collapse",
+  //   name: "Sub-admin", // Adding the Sub-admin menu item
+  //   key: "sub-admin",
+  //   route: "/sub-admin",
+  //   icon: (
+  //     <i className="material-icons" style={{ color: "white" }}>
+  //       admin_panel_settings
+  //     </i>
+  //   ), // Updated icon for sub-admin
+  //   component: <AddSubAdmin />, // The component to render
+  //   layout: "/admin",
+  // },
 
-  {
-    type: "collapse",
-    name: "Create Session", // Change this to reflect the new page's purpose
-    key: "create-session", // Update the key for the new feature
-    route: "/create-session", // Define the new route for creating sessions
-    icon: (
-      <i className="material-icons" style={{ color: "white" }}>
-        video_camera_front
-      </i>
-    ),
-    component: <CreateSession />, // Link the component you want to render (e.g., CreateSession component)
-    layout: "/admin", // The layout the component will be part of
-  },
-  {
-    type: "collapse",
-    name: "Get Session", // Change this to reflect the new page's purpose
-    key: "Get-session", // Update the key for the new feature
-    route: "/Get-session", // Define the new route for creating sessions
-    icon: (
-      <i className="material-icons" style={{ color: "white" }}>
-        video_camera_front
-      </i>
-    ),
-    component: <GetSessions />, // Link the component you want to render (e.g., CreateSession component)
-    layout: "/admin", // The layout the component will be part of
-  },
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/rtl",
-    component: <RTL />,
-  },
-  {
-    type: "collapse",
-    name: "Notifications",
-    key: "notifications",
-    icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
-  },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile",
-    component: <Profile />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Create Session", // Change this to reflect the new page's purpose
+  //   key: "create-session", // Update the key for the new feature
+  //   route: "/create-session", // Define the new route for creating sessions
+  //   icon: (
+  //     <i className="material-icons" style={{ color: "white" }}>
+  //       video_camera_front
+  //     </i>
+  //   ),
+  //   component: <CreateSession />, // Link the component you want to render (e.g., CreateSession component)
+  //   layout: "/admin", // The layout the component will be part of
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Get Session", // Change this to reflect the new page's purpose
+  //   key: "Get-session", // Update the key for the new feature
+  //   route: "/Get-session", // Define the new route for creating sessions
+  //   icon: (
+  //     <i className="material-icons" style={{ color: "white" }}>
+  //       video_camera_front
+  //     </i>
+  //   ),
+  //   component: <GetSessions />, // Link the component you want to render (e.g., CreateSession component)
+  //   layout: "/admin", // The layout the component will be part of
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/tables",
+  //   component: <Tables />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Billing",
+  //   key: "billing",
+  //   icon: <Icon fontSize="small">receipt_long</Icon>,
+  //   route: "/billing",
+  //   component: <Billing />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+  //   route: "/rtl",
+  //   component: <RTL />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Profile",
+  //   key: "profile",
+  //   icon: <Icon fontSize="small">person</Icon>,
+  //   route: "/profile",
+  //   component: <Profile />,
+  // },
   {
     type: "collapse",
     name: "Sign In",

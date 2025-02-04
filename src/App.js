@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import PropTypes from "prop-types";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
