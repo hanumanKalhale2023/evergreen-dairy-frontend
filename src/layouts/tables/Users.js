@@ -59,7 +59,7 @@ function Users() {
           console.error("No token found, please login again");
           return;
         }
-        const response = await fetch("http://localhost:4000/api/admin/all-users", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/admin/all-users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -79,7 +79,37 @@ function Users() {
 
     fetchUsers();
   }, []);
+  const handleDeleteUser = async (userId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found, please login again");
+        return;
+      }
 
+      const response = await fetch(
+        `https://milkdairy-2.onrender.com/api/admin/delete-user/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("User deleted successfully!");
+        // Refresh the users list after deletion
+        const updatedUsers = users.filter((user) => user._id !== userId);
+        setUsers(updatedUsers);
+      } else {
+        const data = await response.json();
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase()); // Convert to lowercase for case-insensitive search
   };
@@ -91,7 +121,44 @@ function Users() {
       user.email.toLowerCase().includes(searchTerm)
     );
   });
+  //update user
+  const handleUpdateUser = async (userId, updatedUser) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found, please login again");
+        return;
+      }
 
+      const response = await fetch(
+        `https://milkdairy-2.onrender.com/api/admin/update-user/${userId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedUser),
+        }
+      );
+
+      if (response.ok) {
+        alert("User updated successfully!");
+        const updatedUsers = users.map((user) =>
+          user._id === userId ? { ...user, ...updatedUser } : user
+        );
+        setUsers(updatedUsers);
+        setOpenUpdateForm(false); // Close the update form
+      } else {
+        const data = await response.json();
+        console.error("Error updating user:", data.message);
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      alert("Error updating user. Please try again.");
+    }
+  };
   const handleCreateOrder = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -100,13 +167,28 @@ function Users() {
         return;
       }
 
-      const response = await fetch("http://localhost:4000/api/orders", {
+      // Ensure milkType is correctly set
+      const { startDate, endDate, milkType, quantity, price } = newOrder;
+
+      if (!selectedOrderUserId || !startDate || !endDate || !milkType || !quantity || !price) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      const response = await fetch("https://milkdairy-2.onrender.com/api/orders", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId: selectedOrderUserId, ...newOrder }),
+        body: JSON.stringify({
+          userId: selectedOrderUserId,
+          startDate,
+          endDate,
+          milkType,
+          quantity,
+          price,
+        }),
       });
 
       const data = await response.json();
@@ -121,14 +203,14 @@ function Users() {
           quantity: 0,
           price: 0,
         });
-
-        // Navigate to /orders and pass the order id
         navigate(`/orders/${data.order._id}`);
       } else {
-        alert("status: " + data.message);
+        console.error("Error creating order:", data.message);
+        alert("Error: " + data.message);
       }
     } catch (error) {
       console.error("Error creating order:", error);
+      alert("Error creating order. Please try again.");
     }
   };
   const handleCreateInvoice = async () => {
@@ -139,7 +221,7 @@ function Users() {
         return;
       }
 
-      const response = await fetch("http://localhost:4000/api/invoice", {
+      const response = await fetch("https://milkdairy-2.onrender.com/api/invoice", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -480,7 +562,42 @@ function Users() {
           </Button>
         </DialogActions>
       </Dialog>
-
+      {/* update user model */}
+      <Dialog
+        open={openUpdateForm}
+        onClose={() => setOpenUpdateForm(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>Update User</DialogTitle>
+        <DialogContent>
+          <MDBox display="flex" flexDirection="column" gap={2} mt={2}>
+            <TextField
+              label="User Name"
+              fullWidth
+              value={selectedUser?.userName || ""}
+              onChange={(e) => setSelectedUser({ ...selectedUser, userName: e.target.value })}
+            />
+            <TextField
+              label="Email"
+              fullWidth
+              value={selectedUser?.email || ""}
+              onChange={(e) => setSelectedUser({ ...selectedUser, email: e.target.value })}
+            />
+          </MDBox>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenUpdateForm(false)} sx={{ color: "blue" }}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleUpdateUser(selectedUser?._id, selectedUser)}
+            sx={{ color: "white", backgroundColor: "orange" }}
+          >
+            Update User
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* Create Invoice Modal */}
       <Dialog
         open={openInvoiceForm}

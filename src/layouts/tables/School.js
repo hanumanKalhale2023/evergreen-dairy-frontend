@@ -36,7 +36,7 @@ function MilkPrices() {
           console.error("No token found, please login again");
           return;
         }
-        const response = await fetch("http://localhost:4000/api/price/get-all-price", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/price/get-all-price", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -78,7 +78,7 @@ function MilkPrices() {
         return;
       }
 
-      const response = await fetch("http://localhost:4000/api/price/add-price", {
+      const response = await fetch("https://milkdairy-2.onrender.com/api/price/add-price", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -132,14 +132,17 @@ function MilkPrices() {
         return;
       }
 
-      const response = await fetch(`http://localhost:4000/api/price/update-price/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(updatedPrice),
-      });
+      const response = await fetch(
+        `https://milkdairy-2.onrender.com/api/price/update-price/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedPrice),
+        }
+      );
 
       if (response.ok) {
         setMilkPrices((prevPrices) =>
@@ -168,12 +171,15 @@ function MilkPrices() {
         return;
       }
 
-      const response = await fetch(`http://localhost:4000/api/price/delete-price/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `https://milkdairy-2.onrender.com/api/price/delete-price/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         setMilkPrices((prevPrices) => prevPrices.filter((price) => price._id !== id));

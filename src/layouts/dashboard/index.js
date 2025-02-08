@@ -34,7 +34,7 @@ function Dashboard() {
           return;
         }
 
-        const response = await fetch("http://localhost:4000/api/admin/all-users", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/admin/all-users", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ function Dashboard() {
           return;
         }
 
-        const response = await fetch("http://localhost:4000/api/orders", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/orders", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function Dashboard() {
           return;
         }
 
-        const response = await fetch("http://localhost:4000/api/price/get-all-price", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/price/get-all-price", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

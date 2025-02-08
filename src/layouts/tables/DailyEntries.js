@@ -29,7 +29,7 @@ function DailyEntries() {
           console.error("No token found, please login again");
           return;
         }
-        const response = await fetch("http://localhost:4000/api/entries/daily-entry", {
+        const response = await fetch("https://milkdairy-2.onrender.com/api/entries/daily-entry", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

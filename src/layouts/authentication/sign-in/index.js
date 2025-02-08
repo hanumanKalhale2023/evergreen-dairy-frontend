@@ -32,10 +32,13 @@ function Basic() {
     };
 
     try {
-      const response = await axios.post("http://localhost:4000/api/admin/login", payload);
+      const response = await axios.post(
+        "https://milkdairy-2.onrender.com/api/admin/login",
+        payload
+      );
 
       if (response.data.token) {
-        // Store the token in localStorage
+        // Store the token in localStoragenp
         localStorage.setItem("token", response.data.token);
 
         alert(response.data.message || "Login successful! Redirecting to the dashboard...");
