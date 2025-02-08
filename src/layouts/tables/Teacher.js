@@ -414,5 +414,14 @@ const Orders = () => {
     </DashboardLayout>
   );
 };
+Orders.propTypes = {
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      // Add other properties of row.original here if needed
+    }).isRequired,
+    // Add other properties of row here if needed
+  }).isRequired,
+};
 
 export default Orders;
